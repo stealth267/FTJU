@@ -1,0 +1,40 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+build
+
+# Vite specific
+.vite/
+*.vite.*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# IDE and editor directories
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test results
+coverage/
+.nyc_output/
+junit.xml
+TEST_RESULTS.xml
+
+# Optional, but common for TypeScript projects
+*.tsbuildinfo
