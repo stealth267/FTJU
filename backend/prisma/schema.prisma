@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MarketType {
+  Futures
+  CFD
+}
+
+model Firm {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  logoUrl            String?
+  likes              Int
+  rating             Float
+  reviews            Int
+  country            String
+  countryFlag        String
+  yearsInOp          Int
+  assets             String[]
+  maxAllocation      Int
+  promo              Json?
+  marketType         MarketType
+  description        String
+  minDeposit         Float
+  profitSplit        String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  platforms          Platform[]          @relation("FirmPlatforms")
+  evaluationPrograms EvaluationProgram[]
+}
+
+model EvaluationProgram {
+  id                 Int      @id @default(autoincrement())
+  programId          String   @unique
+  name               String
+  price              Float?
+  profitTarget       String?
+  maxDrawdown        String?
+  dailyLossLimit     String?
+  minTradingDays     String?
+  maxPositions       String?
+  leverage           String?
+  consistencyRules   String?
+  keyRestrictions    String?
+  maxTotalLoss       String?
+  drawdownType       String?
+  maxContracts       String?
+  scalingPlan        String?
+  resetFee           String?
+  oneTimeFee         String?
+  profitSplit        String?
+  createdAt          DateTime @default(now())
+
+  firmId             Int
+  firm               Firm     @relation(fields: [firmId], references: [id], onDelete: Cascade)
+}
+
+model Platform {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  
+  firms Firm[] @relation("FirmPlatforms")
+}
