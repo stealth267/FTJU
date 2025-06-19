@@ -165,5 +165,3 @@ export const PropFirmCard: React.FC<PropFirmCardProps> = ({
         </article>
     );
 };
-
-export { PropFirmCard };

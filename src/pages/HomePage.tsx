@@ -1,6 +1,7 @@
 import React from 'react';
 import type { FirmData, AdvancedFiltersState, ProgramToCompare, DetailedProgramToCompare } from '../types';
 import { initialAdvancedFilters, MAX_FIRM_COMPARE_ITEMS, MAX_PROGRAM_COMPARE_ITEMS } from '../utils/constants'; // Import constants
+import { useFetchFirms } from '../hooks/useFetchFirms'; // Added import
 
 import SimplifiedHeroSection from '../components/layout/SimplifiedHeroSection';
 import { PropFirmsDisplay } from '../components/common/PropFirmsDisplay';
@@ -8,7 +9,8 @@ import { FirmDetailModal } from '../components/common/FirmDetailModal'; // Corre
 import { ComparisonTray } from '../components/common/ComparisonTray'; // Corrected path
 import { ComparisonModal } from '../components/common/ComparisonModal'; // Corrected path
 import { ProgramComparisonTray } from '../components/common/ProgramComparisonTray'; // Corrected path
-import { ProgramComparisonModal } from '../components/modals/ProgramComparisonModal'; // Assuming this will be created
+import { ProgramComparisonModal } from '../components/common/ProgramComparisonModal'; // Corrected path
+import { PropFirmEvaluationDetailsSection } from '../components/layout/PropFirmEvaluationDetailsSection'; // Added import
 // Note: The modal and tray components listed above are not yet extracted in separate files.
 // This step assumes they will be, or this HomePage will be updated again later.
 // For now, to make PropFirmsDisplay work, we only strictly need PropFirmsDisplay and its direct dependencies.
@@ -19,8 +21,7 @@ export interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ activeMarket }) => {
-    const [firms, setFirms] = React.useState<FirmData[]>([]);
-    const [isLoading, setIsLoading] = React.useState(true);
+    const { firms, isLoading, error } = useFetchFirms(); // Use the hook
     const [selectedFirm, setSelectedFirm] = React.useState<FirmData | null>(null);
     const [advancedFilters, setAdvancedFilters] = React.useState<AdvancedFiltersState>(initialAdvancedFilters);
     const [firmsToCompare, setFirmsToCompare] = React.useState<number[]>([]);
@@ -34,24 +35,7 @@ const HomePage: React.FC<HomePageProps> = ({ activeMarket }) => {
     const [programsToCompare, setProgramsToCompare] = React.useState<ProgramToCompare[]>([]);
     const [isProgramCompareModalOpen, setIsProgramCompareModalOpen] = React.useState(false);
 
-    React.useEffect(() => {
-        const fetchFirms = async () => {
-            setIsLoading(true);
-            try {
-                // This URL will need to be configurable or an environment variable in a real app
-                const response = await fetch(`http://localhost:3001/api/firms`);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const data = await response.json();
-                setFirms(data);
-            } catch (error) {
-                console.error("Error fetching firm data:", error);
-                // Potentially set an error state here to display to the user
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchFirms();
-    }, []);
+    // Removed old useEffect for fetchFirms and useState for firms, isLoading
 
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -126,6 +110,10 @@ const HomePage: React.FC<HomePageProps> = ({ activeMarket }) => {
         return <main><div className="container" style={{ textAlign: 'center', padding: '50px' }}><h1>Loading firms...</h1></div></main>;
     }
 
+    if (error) {
+        return <main><div className="container" style={{ textAlign: 'center', padding: '50px', color: 'red' }}><h1>Error: {error}</h1></div></main>;
+    }
+
     return (
         <main>
             <SimplifiedHeroSection />
@@ -144,8 +132,7 @@ const HomePage: React.FC<HomePageProps> = ({ activeMarket }) => {
                 showFavoritesOnly={showFavoritesOnly}
                 onToggleShowFavoritesOnly={() => setShowFavoritesOnly(prev => !prev)}
             />
-            {/* PropFirmEvaluationDetailsSection would also be part of this page, to be extracted later */}
-            {/* <PropFirmEvaluationDetailsSection firms={firms.filter(f => f.marketType === activeMarket)} /> */}
+            <PropFirmEvaluationDetailsSection firms={firms.filter(f => f.marketType === activeMarket)} />
 
             {selectedFirm && (
                 <FirmDetailModal
