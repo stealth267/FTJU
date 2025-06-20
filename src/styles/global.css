@@ -185,6 +185,22 @@ body {
     transition: background-color var(--transition-base), color var(--transition-base);
 }
 
+/* Typography Baseline - Added in Typography Refinement step */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    font-family: var(--font-family-sans);
+    margin-top: 0;
+    line-height: 1.3;
+}
+h1 { font-size: 2.8rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 1.5rem; }
+h2 { font-size: 2.2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 1.25rem; }
+h3 { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 1rem; }
+h4 { font-size: 1.4rem; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 0.75rem; }
+h5 { font-size: 1.15rem; font-weight: 500; margin-bottom: 0.5rem; }
+h6 { font-size: 1rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-secondary); margin-bottom: 0.5rem; }
+p { margin-bottom: 1rem; }
+/* End Typography Baseline */
+
 #root {
     flex: 1;
     display: flex;
@@ -219,6 +235,7 @@ body {
     white-space: nowrap;
     border-width: 0;
 }
+
 
 /* Buttons */
 .btn {
@@ -259,7 +276,7 @@ body {
 .btn-secondary {
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
-    border-color: var(--border-color-soft);
+    /* border-color: var(--border-color-soft); Removed for flatter Apple-like style */
 }
 .btn-secondary:hover {
     background-color: var(--border-color-strong);
@@ -1149,7 +1166,7 @@ body {
     margin-bottom: 24px;
     font-size: 0.95rem;
 }
-.detail-item { padding: 8px; background-color: var(--bg-primary); border-radius: var(--border-radius-md); }
+.detail-item { padding: 12px; background-color: var(--bg-primary); border-radius: var(--border-radius-md); } /* Increased padding */
 .detail-item strong { color: var(--text-primary); }
 
 .modal-section { margin-bottom: 20px; }
@@ -1533,7 +1550,7 @@ body.firm-compare-active .program-comparison-tray { /* If firm tray is active */
 
 /* Drawdown Visualizer Section */
 .drawdown-visualizer-section {
-    padding: 40px 0;
+    padding: 60px 0; /* Increased vertical padding */
     background-color: var(--bg-secondary);
     border-top: 1px solid var(--border-color-soft);
     border-bottom: 1px solid var(--border-color-soft);
@@ -1914,3 +1931,4 @@ body[data-theme="dark"] .result-item.status-item .result-value.status.safe {
         width: 100%;
     }
 }
+"""
